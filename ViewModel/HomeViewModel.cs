@@ -18,17 +18,5 @@ namespace CarWorkshop.ViewModel
             _navigation = navigationService;
             _navigation.NavigateTo<LogInViewModel>();
         }
-
-        [RelayCommand]
-        public void NavigateHome()
-        {
-            _navigation.NavigateTo<HomeViewModel>();
-        }
-
-        [RelayCommand]
-        public void NavigateToClientList()
-        {
-            _navigation.NavigateTo<ClientsListViewModel>();
-        }
     }
 }

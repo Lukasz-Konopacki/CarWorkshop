@@ -10,13 +10,13 @@
             <view:HomeView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type vms:LogInViewModel}">
-            <view:LogInView/>
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type vms:ClientsListViewModel}">
             <view:ClientsListView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type vms:AddClientViewModel}">
+            <view:AddClientView/>
+        </DataTemplate>
+        
     </Application.Resources>
 </Application>

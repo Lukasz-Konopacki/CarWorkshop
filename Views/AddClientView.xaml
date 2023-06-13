@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="CarWorkshop.Views.AddClientView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CarWorkshop.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="40*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="1" Orientation="Vertical"
+                    Margin="0 20 0 0">
+
+            <TextBlock Text="First Name" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding FirstName}"/>
+
+            <TextBlock Text="Last Name" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding LastName}"/>
+
+            <TextBlock Text="Pesel" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding Pesel}"/>
+
+            <TextBlock Text="Contact Number" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding ContactNumber}"/>
+
+            <TextBlock Text="Nip number" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding NipNumber}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="3" Orientation="Vertical"
+                    Margin="0 20 0 0">
+
+            <TextBlock Text="City" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding City}"/>
+
+            <TextBlock Text="Street" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding Street}"/>
+
+            <TextBlock Text="PostalCode" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding PostalCode}"/>
+
+            <TextBlock Text="Country" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding Country}"/>
+
+            <TextBlock Text="BuildingNumber" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding BuildingNumber}"/>
+
+            <TextBlock Text="FlatNumber" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding FlatNumber}"/>
+
+            <Button Content="Add"
+                    Margin="30"
+                    Command="{Binding Path=AddClientCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

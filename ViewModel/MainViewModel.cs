@@ -1,7 +1,7 @@
 ﻿using CarWorkshop.Services;
 using CarWorkshop.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,19 @@ namespace CarWorkshop.ViewModel
         public MainViewModel(INavigationService navigationService)
         {
             _navigation = navigationService;
-            _navigation.NavigateTo<LogInViewModel>();
+            _navigation.NavigateTo<ClientsListViewModel>();
+        }
+
+        [RelayCommand]
+        public void NavigateHome()
+        {
+            _navigation.NavigateTo<HomeViewModel>();
+        }
+
+        [RelayCommand]
+        public void NavigateToClientList()
+        {
+            _navigation.NavigateTo<ClientsListViewModel>();
         }
     }
 }

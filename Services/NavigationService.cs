@@ -1,5 +1,5 @@
 ﻿using CarWorkshop.ViewModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +10,12 @@ namespace CarWorkshop.Services
 {
     public interface INavigationService
     {
-        ViewModelBase CurrentView { get; }
         void NavigateTo<T>() where T : ViewModelBase;
     }
 
     public class NavigationService : ObservableObject, INavigationService
     {
-        private ViewModelBase _currentView;
+        private ViewModelBase? _currentView;
         private readonly Func<Type, ViewModelBase> _viewModelFactory;
 
         public ViewModelBase CurrentView 

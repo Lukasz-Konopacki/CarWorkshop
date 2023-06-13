@@ -1,6 +1,8 @@
-﻿using CarWorkshop.Services;
+﻿using CarWorkshop.DbContexts;
+using CarWorkshop.Services;
 using CarWorkshop.ViewModel;
 using CarWorkshop.Views;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -25,22 +27,26 @@ namespace WpfApp1
 
             services.AddSingleton<MainViewModel>();
             services.AddSingleton(provaider => new MainWindow { DataContext = provaider.GetRequiredService<MainViewModel>() });
+            services.AddSingleton(provaider => new LogInWindow { DataContext = provaider.GetRequiredService<LogInViewModel>() });
             services.AddSingleton<Func<Type, ViewModelBase>>(provaider => viewModelType => (ViewModelBase)provaider.GetRequiredService(viewModelType));
 
-            services.AddSingleton<HomeViewModel>();
-            services.AddSingleton<ClientsListViewModel>();
-            services.AddSingleton<LogInViewModel>();
+            services.AddTransient<LogInViewModel>();
+            services.AddTransient<HomeViewModel>();
+            services.AddTransient<ClientsListViewModel>();
+            services.AddTransient<AddClientViewModel>();
+            services.AddSingleton<DatabaseContext>();
 
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAccessServie, AccessServie>();
-            
+            services.AddSingleton<IClientService, ClientService>();
+
 
             _serviceProvider = services.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var mainwindow = _serviceProvider.GetRequiredService<MainWindow>();
+            var mainwindow = _serviceProvider.GetRequiredService<LogInWindow>();
             mainwindow.Show();
             base.OnStartup(e);
         }

@@ -28,7 +28,7 @@
                 Margin="30 10 30 0"
                 Command="{Binding Path=AddNewClientCommand}"/>
 
-        <ListView  ItemsSource="{Binding Clients}" 
+        <ListView  ItemsSource="{Binding ClientsView}" 
                    Grid.Row="2" Grid.ColumnSpan="3"
                    Margin="10">
             <ListView.View>
@@ -37,6 +37,15 @@
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding FullName}"/>
                     <GridViewColumn Header="Adress" DisplayMemberBinding="{Binding Adress}"/>
                     <GridViewColumn Header="City" DisplayMemberBinding="{Binding City}"/>
+                    <GridViewColumn Header="Edit">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete" 
+                                        Command="{Binding Path=DataContext.DeleteClientCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}"
+                                        CommandParameter="{Binding Id}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

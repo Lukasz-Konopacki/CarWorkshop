@@ -4,7 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
 
-    <ContentPresenter Grid.Column="1" Content="{Binding Path= Navigation.CurrentView}"/>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <Button Content="Home"
+                    Height="25"
+                    Command="{Binding Path=NavigateHomeCommand}"/>
+
+            <Button Content="ClientList"
+                    Height="25"
+                    Command="{Binding Path=NavigateToClientListCommand}"/>
+        </StackPanel>
+
+
+        <ContentPresenter Grid.Column="1" Content="{Binding Path= Navigation.CurrentView}"/>
+    </Grid>
 </Window>

@@ -12,7 +12,7 @@ namespace CarWorkshop.Model
         public string Password { get; set; }
         public List<UserPermission> Permissions { get; set; }
 
-        public User(Person person, string login, string password) : base(person.FirstName, person.LastName, person.Pesel)
+        public User(Person person, string login, string password) : base(person.Id,person.FirstName, person.LastName, person.Pesel)
         {
             Login = login;
             Password = password;

@@ -1,5 +1,6 @@
 ﻿using CarWorkshop.Model;
 using CarWorkshop.Services;
+using CarWorkshop.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -12,26 +13,49 @@ namespace CarWorkshop.ViewModel
 {
     public partial class ClientsListViewModel : ViewModelBase
     {
-        private List<ClientViewModel> _clients;
-        public List<ClientViewModel> Clients
+        private readonly INavigationService _navigation;
+        private readonly IClientService _clientService;
+
+        [ObservableProperty]
+        private List<ClientViewModel> _clientsView;
+
+        public ClientsListViewModel(INavigationService navigation, IClientService clientService)
         {
-            get { return _clients; }
-            set { _clients = value; }
+            _navigation = navigation;
+            _clientService = clientService;
+
+            RefreshData();
         }
 
-        public ClientsListViewModel(INavigationService service)
+
+        public void RefreshData()
         {
-            _clients = new List<ClientViewModel>()
+            var clients = _clientService.GetAllClients().ToList();
+            ClientsView = ClientsListToViewModel(clients);
+        }
+
+        private List<ClientViewModel> ClientsListToViewModel(List<Client> clients)
+        {
+            var result = new List<ClientViewModel>();
+
+            foreach (var client in clients)
             {
-                new ClientViewModel(new Client("Jan", "Kowalski", "9606301123", "48664458002", "0011", new Address("Wroclaw", "Krzycka", "53-033", "Poland", "14a"))),
-                new ClientViewModel(new Client("Waldemar", "Dudud", "9606301123", "48664458002", "0011", new Address("Wroclaw", "Krzycka", "53-033", "Poland", "14a")))
-            };
+                result.Add(new ClientViewModel(client));
+            }
+            return result;
         }
 
         [RelayCommand]
         public void AddNewClient()
         {
+            _navigation.NavigateTo<AddClientViewModel>();
+        }
 
+        [RelayCommand]
+        public void DeleteClient(string Id)
+        {
+            _clientService.DeleteClient(new Guid(Id));
+            RefreshData();
         }
     }
 }

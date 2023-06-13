@@ -11,6 +11,7 @@ namespace CarWorkshop.ViewModel
     public class ClientViewModel : ViewModelBase
     {
         private Client _client {get; set;}
+        public string Id => _client.Id.ToString();
         public string Pesel => _client.Pesel;
         public string FullName => _client.FirstName + " " + _client.LastName;
         public string Adress => _client.Address is not null ? _client.Address.Street + " " + _client.Address.BuildingNumber + (_client.Address.FlatNumber is not null ? "/" + _client.Address.FlatNumber : "")  : "";

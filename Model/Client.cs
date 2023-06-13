@@ -10,13 +10,13 @@ namespace CarWorkshop.Model
         [MaxLength(20)]
         public string? NipNumber { get; set; }
 
-        public Client(Guid id, string firstName, string lastName, string pesel, string contactNumber, string nipNumber, Address address) : base(id, firstName, lastName, pesel, address)
+        public Client(Guid id, string firstName, string lastName, string pesel, string contactNumber, string nipNumber) : base(id, firstName, lastName, pesel)
         {
             ContactNumber = contactNumber;
             NipNumber = nipNumber;
         }
 
-        public Client(Guid id, string firstName, string lastName, string pesel, string contactNumber, string nipNumber) : base(id, firstName, lastName, pesel)
+        public Client(Guid id, string firstName, string lastName, string pesel, string contactNumber, string nipNumber, Address address) : base(id, firstName, lastName, pesel, address)
         {
             ContactNumber = contactNumber;
             NipNumber = nipNumber;

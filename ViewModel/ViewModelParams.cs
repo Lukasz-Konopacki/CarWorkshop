@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CarWorkshop.ViewModel
 {
-    public abstract class ViewModelBase :ObservableObject
+    public class ViewModelParams : ViewModelBase
     {
         public Dictionary<string, object> Params { get; set; }
 
-        public ViewModelBase()
+        ViewModelParams(Dictionary<string, object> @params)
         {
-            Params = new Dictionary<string, object>();
+            Params = @params;
         }
     }
 }

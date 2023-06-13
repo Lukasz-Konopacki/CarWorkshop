@@ -17,6 +17,10 @@
         <DataTemplate DataType="{x:Type vms:AddClientViewModel}">
             <view:AddClientView/>
         </DataTemplate>
-        
+
+        <DataTemplate DataType="{x:Type vms:ClientDetailsViewModel}">
+            <view:ClientDetailsView/>
+        </DataTemplate>
+
     </Application.Resources>
 </Application>

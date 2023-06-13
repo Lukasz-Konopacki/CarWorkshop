@@ -57,5 +57,11 @@ namespace CarWorkshop.ViewModel
             _clientService.DeleteClient(new Guid(Id));
             RefreshData();
         }
+
+        [RelayCommand]
+        public void DetailsClient(string Id)
+        {
+            _navigation.WithParam("ClientId", Id).NavigateTo<ClientDetailsViewModel>();
+        }
     }
 }

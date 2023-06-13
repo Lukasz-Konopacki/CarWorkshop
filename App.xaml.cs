@@ -28,11 +28,12 @@ namespace WpfApp1
             services.AddSingleton<MainViewModel>();
             services.AddSingleton(provaider => new MainWindow { DataContext = provaider.GetRequiredService<MainViewModel>() });
             services.AddSingleton(provaider => new LogInWindow { DataContext = provaider.GetRequiredService<LogInViewModel>() });
-            services.AddSingleton<Func<Type, ViewModelBase>>(provaider => viewModelType => (ViewModelBase)provaider.GetRequiredService(viewModelType));
+            services.AddSingleton<Func<Type,ViewModelBase>>(provaider => (viewModelType) => (ViewModelBase)provaider.GetRequiredService(viewModelType));
 
             services.AddTransient<LogInViewModel>();
             services.AddTransient<HomeViewModel>();
             services.AddTransient<ClientsListViewModel>();
+            services.AddTransient<ClientDetailsViewModel>();
             services.AddTransient<AddClientViewModel>();
             services.AddSingleton<DatabaseContext>();
 

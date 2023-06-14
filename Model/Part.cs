@@ -10,15 +10,18 @@ namespace CarWorkshop.Model
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Price { get; set; }
+        public decimal Price { get; set; }
         public int Quantity { get; set; }
+        public Guid RepairId { get; set; }
+        public decimal SummaryPrice => Price * Quantity;
 
-        public Part(Guid id, string name, string price, int quantity)
+        public Part(Guid id, string name, decimal price, int quantity, Guid repairId)
         {
             Id = id;
             Name = name;
             Price = price;
             Quantity = quantity;
+            RepairId = repairId;
         }
     }
 }

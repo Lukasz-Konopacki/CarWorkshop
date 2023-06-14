@@ -4,6 +4,7 @@ using CarWorkshop.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarWorkshop.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230614150931_addcars")]
+    partial class addcars
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,65 +133,6 @@ namespace CarWorkshop.Migrations
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("CarWorkshop.Model.Part", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RepairId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RepairId");
-
-                    b.ToTable("Parts");
-                });
-
-            modelBuilder.Entity("CarWorkshop.Model.Repair", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CarVin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(17)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("Price")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
-
-                    b.Property<string>("ProblemDescriptionByClient")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("SummaryWorkingHours")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarVin");
-
-                    b.ToTable("Repairs");
-                });
-
             modelBuilder.Entity("CarWorkshop.Model.Car", b =>
                 {
                     b.HasOne("CarWorkshop.Model.Client", null)
@@ -207,37 +151,9 @@ namespace CarWorkshop.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("CarWorkshop.Model.Part", b =>
-                {
-                    b.HasOne("CarWorkshop.Model.Repair", null)
-                        .WithMany("parts")
-                        .HasForeignKey("RepairId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CarWorkshop.Model.Repair", b =>
-                {
-                    b.HasOne("CarWorkshop.Model.Car", null)
-                        .WithMany("Repairs")
-                        .HasForeignKey("CarVin")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CarWorkshop.Model.Car", b =>
-                {
-                    b.Navigation("Repairs");
-                });
-
             modelBuilder.Entity("CarWorkshop.Model.Client", b =>
                 {
                     b.Navigation("Cars");
-                });
-
-            modelBuilder.Entity("CarWorkshop.Model.Repair", b =>
-                {
-                    b.Navigation("parts");
                 });
 #pragma warning restore 612, 618
         }

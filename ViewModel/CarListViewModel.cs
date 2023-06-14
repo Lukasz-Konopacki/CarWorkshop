@@ -15,7 +15,8 @@ namespace CarWorkshop.ViewModel
         private readonly INavigationService _navigation;
         private readonly ICarService _carService;
 
-        private List<CarViewModel> _cars;
+        [ObservableProperty]
+        private List<Car> _carsList;
 
         public CarListViewModel(INavigationService navigation, ICarService carService)
         {
@@ -27,31 +28,19 @@ namespace CarWorkshop.ViewModel
 
         public void RefreshData()
         {
-            var cars = _carService.GetAllCars().ToList();
-            _cars = carsListToViewModel(cars);
-        }
-
-        private List<CarViewModel> carsListToViewModel(List<Car> cars)
-        {
-            var result = new List<CarViewModel>();
-
-            foreach (var car in cars)
-            {
-                result.Add(new CarViewModel(car));
-            }
-            return result;
+            _carsList = _carService.GetAllCars().ToList();
         }
 
         [RelayCommand]
-        public void AddNewCar()
+        public void DetailsCar(string vin)
         {
-            _navigation.NavigateTo<AddClientViewModel>();
+            _navigation.NavigateTo<CarDetailsViewModel>(vin);
         }
 
         [RelayCommand]
-        public void DeleteCar(string Id)
+        public void DeleteCar(string vin)
         {
-            _carService.DeleteCar(new Guid(Id));
+            _carService.DeleteCar(vin);
             RefreshData();
         }
     }

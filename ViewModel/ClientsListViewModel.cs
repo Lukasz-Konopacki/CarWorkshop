@@ -31,7 +31,7 @@ namespace CarWorkshop.ViewModel
         public void RefreshData()
         {
             var clients = _clientService.GetAllClients().ToList();
-            ClientsView = ClientsListToViewModel(clients);
+            _clientsView = ClientsListToViewModel(clients);
         }
 
         private List<ClientViewModel> ClientsListToViewModel(List<Client> clients)
@@ -61,7 +61,22 @@ namespace CarWorkshop.ViewModel
         [RelayCommand]
         public void DetailsClient(string Id)
         {
-            _navigation.WithParam("ClientId", Id).NavigateTo<ClientDetailsViewModel>();
+            _navigation.NavigateTo<ClientDetailsViewModel>(new Guid(Id));
+        }
+    }
+
+    public class ClientViewModel : ViewModelBase
+    {
+        private Client _client { get; set; }
+        public string Id => _client.Id.ToString();
+        public string Pesel => _client.Pesel;
+        public string FullName => _client.FirstName + " " + _client.LastName;
+        public string Adress => _client.Address is not null ? _client.Address.Street + " " + _client.Address.BuildingNumber + (_client.Address.FlatNumber is not null ? "/" + _client.Address.FlatNumber : "") : "";
+        public string City => _client.Address is not null ? _client.Address.City : "";
+
+        public ClientViewModel(Client client)
+        {
+            _client = client;
         }
     }
 }

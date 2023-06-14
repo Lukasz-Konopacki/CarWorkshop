@@ -20,9 +20,13 @@
                     Height="25"
                     Command="{Binding Path=NavigateHomeCommand}"/>
 
-            <Button Content="ClientList"
+            <Button Content="Client List"
                     Height="25"
                     Command="{Binding Path=NavigateToClientListCommand}"/>
+
+            <Button Content="Car List"
+                    Height="25"
+                    Command="{Binding Path=NavigateToCarListCommand}"/>
         </StackPanel>
 
 

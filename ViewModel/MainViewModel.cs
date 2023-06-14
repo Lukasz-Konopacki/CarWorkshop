@@ -32,5 +32,11 @@ namespace CarWorkshop.ViewModel
         {
             _navigation.NavigateTo<ClientsListViewModel>();
         }
+
+        [RelayCommand]
+        public void NavigateToCarList()
+        {
+            _navigation.NavigateTo<CarListViewModel>();
+        }
     }
 }

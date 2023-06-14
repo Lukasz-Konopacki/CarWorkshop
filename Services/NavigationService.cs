@@ -10,18 +10,15 @@ namespace CarWorkshop.Services
 {
     public interface INavigationService
     {
-        void NavigateTo<TViewModel>() 
+        void NavigateTo<TViewModel>(object? param = null) 
             where TViewModel : ViewModelBase;
-
-        INavigationService WithParam(string name, object value);
     }
 
     public class NavigationService : ObservableObject, INavigationService
     {
-        private Dictionary<string, object> Params { get; set; }
 
         private ViewModelBase? _currentView;
-        private Func<Type ,ViewModelBase> _viewModelFactory;
+        private Func<Type, object ,ViewModelBase> _viewModelFactory;
 
         public ViewModelBase CurrentView 
         { 
@@ -34,34 +31,17 @@ namespace CarWorkshop.Services
 
         }
 
-        public NavigationService(Func<Type ,ViewModelBase> viewModelFactory)
+        public NavigationService(Func<Type, object? ,ViewModelBase> viewModelFactory)
         {
             _viewModelFactory = viewModelFactory;
-            Params = new Dictionary<string, object>();
         }
 
-        public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
+        public void NavigateTo<TViewModel>(object? param = null) where TViewModel : ViewModelBase
         {
             //Stworzenie nowego viewModelu na podstawie przekazanego typu
-            var viewModel = _viewModelFactory(typeof(TViewModel));
-
-            //Ustawienie parametrów przekazanych do serwisu nawigacji w celu przekazania ich dalej
-            foreach(var param in Params)
-            {
-                viewModel.GetType().GetProperty(param.Key)?.SetValue(viewModel, param.Value);
-            }
+            var viewModel = _viewModelFactory(typeof(TViewModel), param);
 
             CurrentView = viewModel;
-
-            //po udanym przejsciu do nowego viewmodulu czyścimy parametry wejsciowe
-            Params.Clear();
-        }
-
-        public INavigationService WithParam(string name, object value)
-        {
-            Params.Add(name, value);
-
-            return this;
         }
     }
 }

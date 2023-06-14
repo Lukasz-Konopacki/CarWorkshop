@@ -10,7 +10,7 @@ namespace CarWorkshop.Services
     public interface IClientService
     {
         public IEnumerable<Client> GetAllClients();
-        public Client GetClientById(Guid id);
+        public Client? GetClientById(Guid id);
         public bool AddClient(string firstName, string lastName, string pesel, string contactNumber, 
                               string nipNumber, string city, string street, string postalCode, string country, string buildingNumber, string? flatNumber);
         public bool DeleteClient(Guid id);
@@ -46,9 +46,9 @@ namespace CarWorkshop.Services
             return _dbContexts.Clients.Take(20).Include(client => client.Address);
         }
 
-        public Client GetClientById(Guid id)
+        public Client? GetClientById(Guid id)
         {
-            throw new NotImplementedException();
+            return _dbContexts.Clients.SingleOrDefault(x => x.Id == id);
         }
     }
 }

@@ -22,5 +22,24 @@
             <view:ClientDetailsView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type vms:AddCarViewModel}">
+            <view:AddCarView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vms:CarListViewModel}">
+            <view:CarsListView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vms:AddRepairViewModel}">
+            <view:AddRepairView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vms:CarDetailsViewModel}">
+            <view:CarDetailsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vms:RepairDetailViewModel}">
+            <view:RepairDetailView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

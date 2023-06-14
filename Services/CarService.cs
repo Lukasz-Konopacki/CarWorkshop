@@ -1,5 +1,6 @@
 ﻿using CarWorkshop.DbContexts;
 using CarWorkshop.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace CarWorkshop.Services
     public interface ICarService
     {
         public IEnumerable<Car> GetAllCars();
-        public Car GetCarById(Guid id);
-        public bool AddCar(string plateNumer, string vIN, string brand, int yearOfProduce);
-        public bool DeleteCar(Guid id);
+        public Car? GetCarByVin(string vin);
+        public bool AddCar(string plateNumer, string vIN, string brand, int? yearOfProduce, Guid clientId);
+        public bool DeleteCar(string vin);
     }
 
     public class CarService : ICarService
@@ -25,24 +26,30 @@ namespace CarWorkshop.Services
             _context = context;
         }
 
-        public bool AddCar(string plateNumer, string vIN, string brand, int yearOfProduce)
+        public bool AddCar(string plateNumer, string vIN, string brand, int? yearOfProduce, Guid clientId)
         {
-            throw new NotImplementedException();
+            _context.Cars.Add(new Car(plateNumer, vIN, brand, yearOfProduce ?? 0, clientId));
+            _context.SaveChanges();
+            return true;
         }
 
-        public bool DeleteCar(Guid id)
+        public bool DeleteCar(string vin)
         {
-            throw new NotImplementedException();
+            _context.Cars.Remove(_context.Cars.Find(vin));
+            _context.SaveChanges();
+            return true;
         }
 
         public IEnumerable<Car> GetAllCars()
         {
-            throw new NotImplementedException();
+            return _context.Cars.Take(20);
         }
 
-        public Car GetCarById(Guid id)
+        public Car? GetCarByVin(string vin)
         {
-            throw new NotImplementedException();
+            return _context.Cars.Where(b => b.VIN == vin)
+                       .Include(b => b.Repairs)
+                       .FirstOrDefault();
         }
     }
 }

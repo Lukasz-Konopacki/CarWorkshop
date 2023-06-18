@@ -38,9 +38,9 @@ namespace CarWorkshop.ViewModel
         }
 
         [RelayCommand]
-        public void DeleteCar(string vin)
+        public void DeleteCar(Car car)
         {
-            _carService.DeleteCar(vin);
+            _carService.DeleteCar(car);
             RefreshData();
         }
     }

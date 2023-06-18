@@ -13,46 +13,53 @@ namespace CarWorkshop.ViewModel
 {
     public partial class RepairDetailViewModel :ViewModelBase
     {
-        private readonly Guid _repairId;
         private readonly IRepairService _repairService;
+        
         [ObservableProperty]
-        private Repair? _repair;
+        private Repair _repair;
+        [ObservableProperty]
+        private ObservableCollection<Part> _parts;
+        [ObservableProperty]
+        private decimal? _price;
 
-        public string CarVin => _repair.CarVin;
-        public decimal? Price => _repair.Price;
-        public int SummaryWorkingHours => _repair.SummaryWorkingHours;
+        public string CarName => $"{_repair.Car.Brand} {_repair.Car.Model} ({_repair.Car.PlateNumer})";
+        public string CarPlateNumber => _repair.Car.PlateNumer;
+        public int SummaryWorkingHours => _repair.WorkingHours;
+        public string ProblemDescription => _repair.ProblemDescriptionByClient ?? "";
         public DateTime StartDate => _repair.StartDate;
-        public DateTime EndDate => _repair.EndDate;
+        public DateTime? EndDate => _repair.EndDate;
 
         [ObservableProperty]
-        public ObservableCollection<Part> _parts;
-
-        [ObservableProperty]
-        private string? _newPartName;
+        private string _newPartName;
         [ObservableProperty]
         private decimal _newPartPrice;
         [ObservableProperty]
         private int _newPartQuantity;
 
-
         public RepairDetailViewModel(Guid repairId, IRepairService repairService)
         {
-            _repairId = repairId;
             _repairService = repairService;
-            RefreshData();
-        }
+            _repair = _repairService.GetRepairById(repairId);
+            _parts = new ObservableCollection<Part>(_repair.Parts);
 
-        public void RefreshData()
-        {
-            _repair = _repairService.GetRepairById(_repairId);
-            _parts = new ObservableCollection<Part>(_repair.parts);
+            Price = _repair.Price;
         }
 
         [RelayCommand]
         public void AddPart()
         {
-            _repairService.AddPart(Guid.NewGuid(), _newPartName, _newPartPrice, _newPartQuantity, _repairId);
-            RefreshData();
+            Part newPart = _repairService.AddPart(_repair, _newPartName, _newPartPrice, _newPartQuantity);
+            _parts.Add(newPart);
+
+            Price = _repair.Price;
+            
+        }
+
+        [RelayCommand]
+        public void RemovePart(Part part)
+        {
+            _repairService.DeletePart(part);
+            _parts.Remove(part);
         }
     }
 }

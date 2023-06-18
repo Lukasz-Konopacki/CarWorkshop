@@ -15,22 +15,18 @@ namespace CarWorkshop.Model
         public string Pesel { get; set; }
         public Address? Address { get; set; }
 
-        protected Person(Guid id, string firstName, string lastName, string pesel, Address address)
+        /// <summary>
+        /// Constructor for EF
+        /// </summary>
+        protected Person() { }
+
+        public Person(Guid id, string firstName, string lastName, string pesel, Address? address = null)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             Pesel = pesel;
             Address = address;
-        }
-
-        protected Person(Guid id, string firstName, string lastName, string pesel)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Pesel = pesel;
-            Address = null;
         }
     }
 }

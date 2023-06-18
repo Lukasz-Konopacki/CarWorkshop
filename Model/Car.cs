@@ -9,22 +9,34 @@ namespace CarWorkshop.Model
 {
     public class Car
     {
-        [Key, MaxLength(17)]
+        [Key]
+        public Guid Id { get; set; }
+        [MaxLength(17)]
         public string VIN { get; set; }
         [MaxLength(7)]
         public string PlateNumer { get; set; }
+        [MaxLength(51)]
         public string Brand { get; set; }
+        [MaxLength(51)]
+        public string Model { get; set; }
         public int YearOfProduce { get; set; }
-        public Guid ClientId { get; set; }
+        public Client Client { get; set; }
         public List<Repair> Repairs { get; set; }
 
-        public Car(string plateNumer, string vIN, string brand, int yearOfProduce, Guid clientId)
+        /// <summary>
+        /// Constructor for EF
+        /// </summary>
+        private Car(){}
+
+        public Car(Guid id, Client client, string plateNumer, string vIN, string brand, string model,int yearOfProduce)
         {
-            PlateNumer = plateNumer;
+            Id = id;
             VIN = vIN;
+            PlateNumer = plateNumer;
             Brand = brand;
+            Model = model;
             YearOfProduce = yearOfProduce;
-            ClientId = clientId;
+            Client = client;
             Repairs = new List<Repair>();
         }
 

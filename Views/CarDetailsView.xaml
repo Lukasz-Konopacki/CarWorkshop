@@ -40,22 +40,22 @@
             Grid.Row="1" Grid.Column="0"
             Margin="10">
 
-            <TextBlock Text="Vin:" 
-                   TextAlignment="Left"
-                   FontSize="14"
-                   FontWeight="Bold"/>
-
-            <TextBlock Text="{Binding VIN}" 
-                   TextAlignment="Left"
-                   FontSize="14"
-                   Margin="5 0 0 0"/>
-
             <TextBlock Text="Plate Numer:" 
                    TextAlignment="Left"
                    FontSize="14"
                    FontWeight="Bold"/>
 
             <TextBlock Text="{Binding PlateNumer}" 
+                   TextAlignment="Left"
+                   FontSize="14"
+                   Margin="5 0 0 0"/>
+
+            <TextBlock Text="Vin:" 
+                   TextAlignment="Left"
+                   FontSize="14"
+                   FontWeight="Bold"/>
+
+            <TextBlock Text="{Binding VIN}" 
                    TextAlignment="Left"
                    FontSize="14"
                    Margin="5 0 0 0"/>
@@ -76,16 +76,28 @@
                    Margin="10">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Start Date" DisplayMemberBinding="{Binding StartDate}"/>
-                    <GridViewColumn Header="End Date" DisplayMemberBinding="{Binding EndDate}"/>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding ProblemShortDescripton}"/>
+                    <GridViewColumn Header="Start Date" DisplayMemberBinding="{Binding StartDate, StringFormat=dd-MM-yyyy}"/>
+                    <GridViewColumn Header="End Date" DisplayMemberBinding="{Binding EndDate, StringFormat=dd-MM-yyyy}"/>
+                    <GridViewColumn Header="Kilometerage" DisplayMemberBinding="{Binding Kilometerage}"/>
+                    <GridViewColumn Header="IncludeOilService?" DisplayMemberBinding="{Binding IncludeOilService}"/>
+                    <GridViewColumn Header="Work Hours" DisplayMemberBinding="{Binding WorkingHours}"/>
                     <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
-                    <GridViewColumn Header="Summary Working Hours" DisplayMemberBinding="{Binding SummaryWorkingHours}"/>
                     <GridViewColumn Header="Details">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Details" 
                                         Command="{Binding Path=DataContext.DetailsRepairCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}"
-                                        CommandParameter="{Binding Id}"/>
+                                        CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Delete">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete" 
+                                        Command="{Binding Path=DataContext.DeleteRepairCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}"
+                                        CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

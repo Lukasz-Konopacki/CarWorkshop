@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,35 +11,39 @@ namespace CarWorkshop.Model
 {
     public class Repair
     {
-        private Guid _guid;
-        private string? _problemDescriptionByClient;
-        private decimal? _price;
-        private int _summaryWorkingHours;
-        private DateTime _startDate;
-        private DateTime _endDate;
+        private static decimal WorkingHourPrice => 125m;
 
         [Key]
         public Guid Id { get; set; }
+        public Car Car { get; set; }
         [MaxLength]
         public string? ProblemDescriptionByClient { get; set; }
-        [Precision(14, 2)]
-        public decimal? Price { get; set; }
-        public int SummaryWorkingHours { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string CarVin { get; set; }
-        public List<Part> parts {get; set;}
+        public int Kilometerage { get; set; }
+        public bool IncludeOilService { get; set; }
+        [Column(TypeName = "money")]
+        public int WorkingHours { get; set; }
+        public List<Part> Parts {get; set;}
+        public decimal? Price => Parts?.Sum(p => p.SummaryPrice) + (WorkingHours) ?? 0 * WorkingHourPrice;
+        public string? ProblemShortDescripton => ProblemDescriptionByClient.Length > 30 ? ProblemDescriptionByClient?.Substring(0, 20) + "..." : ProblemDescriptionByClient;
 
-        public Repair(Guid id, string? problemDescriptionByClient, decimal? price, int summaryWorkingHours, DateTime startDate, DateTime endDate, string carVin)
+        /// <summary>
+        /// Constructor for EF
+        /// </summary>
+        private Repair(){ }
+
+        public Repair(Guid id, Car car, int kilometerage, bool includeOilService,  string? problemDescriptionByClient, DateTime startDate, DateTime endDate, int workingHours)
         {
             Id = id;
             ProblemDescriptionByClient = problemDescriptionByClient;
-            Price = price;
-            SummaryWorkingHours = summaryWorkingHours;
             StartDate = startDate;
             EndDate = endDate;
-            CarVin = carVin;
-            parts = new List<Part>();
+            WorkingHours = workingHours;
+            Car = car;
+            Parts = new List<Part>();
+            Kilometerage = kilometerage;
+            IncludeOilService = includeOilService;
         }
     }
 }

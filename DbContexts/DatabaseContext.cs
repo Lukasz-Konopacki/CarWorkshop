@@ -12,7 +12,7 @@ namespace CarWorkshop.DbContexts
     {
         private static string _connectionString => "Data Source=LUNIA-I7-12GEN-;Initial Catalog=CarWorkshopDB;Integrated Security=True;TrustServerCertificate=true";
         public DbSet<Client> Clients {get; set;}
-        public DbSet<Address> addresses { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Repair> Repairs { get; set; }
         public DbSet<Part> Parts { get; set; }

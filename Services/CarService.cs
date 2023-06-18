@@ -11,10 +11,10 @@ namespace CarWorkshop.Services
 {
     public interface ICarService
     {
-        public IEnumerable<Car> GetAllCars();
-        public Car? GetCarByVin(string vin);
-        public bool AddCar(string plateNumer, string vIN, string brand, int? yearOfProduce, Guid clientId);
-        public bool DeleteCar(string vin);
+        public List<Car> GetAllCars();
+        public Car? GetCarById(Guid Id);
+        public Car AddCar(Client client, string plateNumer, string vIN, string brand, string model, int yearOfProduce);
+        public void DeleteCar(Car car);
     }
 
     public class CarService : ICarService
@@ -26,29 +26,30 @@ namespace CarWorkshop.Services
             _context = context;
         }
 
-        public bool AddCar(string plateNumer, string vIN, string brand, int? yearOfProduce, Guid clientId)
+        public Car AddCar(Client client, string plateNumer, string vIN, string brand, string model ,int yearOfProduce)
         {
-            _context.Cars.Add(new Car(plateNumer, vIN, brand, yearOfProduce ?? 0, clientId));
+            Car newCar = new Car(Guid.NewGuid(), client, plateNumer, vIN, brand, model, yearOfProduce);
+            _context.Cars.Add(newCar);
             _context.SaveChanges();
-            return true;
+            return newCar;
         }
 
-        public bool DeleteCar(string vin)
+        public void DeleteCar(Car car)
         {
-            _context.Cars.Remove(_context.Cars.Find(vin));
+            _context.Cars.Remove(car);
             _context.SaveChanges();
-            return true;
         }
 
-        public IEnumerable<Car> GetAllCars()
+        public List<Car> GetAllCars()
         {
-            return _context.Cars.Take(20);
+            return _context.Cars.ToList();
         }
 
-        public Car? GetCarByVin(string vin)
+        public Car? GetCarById(Guid Id)
         {
-            return _context.Cars.Where(b => b.VIN == vin)
+            return _context.Cars.Where(b => b.Id == Id)
                        .Include(b => b.Repairs)
+                       .Include(b => b.Client)
                        .FirstOrDefault();
         }
     }

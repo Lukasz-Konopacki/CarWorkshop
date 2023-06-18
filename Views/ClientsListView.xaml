@@ -42,7 +42,7 @@
                             <DataTemplate>
                                 <Button Content="Details" 
                                         Command="{Binding Path=DataContext.DetailsClientCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}"
-                                        CommandParameter="{Binding Id}"/>
+                                        CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -51,7 +51,7 @@
                             <DataTemplate>
                                 <Button Content="Delete" 
                                         Command="{Binding Path=DataContext.DeleteClientCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}"
-                                        CommandParameter="{Binding Id}"/>
+                                        CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

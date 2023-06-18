@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,26 +18,20 @@ namespace CarWorkshop.ViewModel
         private readonly IClientService _clientService;
 
         [ObservableProperty]
-        private List<ClientViewModel> _clientsView;
+        private ObservableCollection<ClientViewModel> _clientsView;
 
         public ClientsListViewModel(INavigationService navigation, IClientService clientService)
         {
             _navigation = navigation;
             _clientService = clientService;
 
-            RefreshData();
-        }
-
-
-        public void RefreshData()
-        {
             var clients = _clientService.GetAllClients().ToList();
             _clientsView = ClientsListToViewModel(clients);
         }
 
-        private List<ClientViewModel> ClientsListToViewModel(List<Client> clients)
+        private ObservableCollection<ClientViewModel> ClientsListToViewModel(List<Client> clients)
         {
-            var result = new List<ClientViewModel>();
+            var result = new ObservableCollection<ClientViewModel>();
 
             foreach (var client in clients)
             {
@@ -52,31 +47,31 @@ namespace CarWorkshop.ViewModel
         }
 
         [RelayCommand]
-        public void DeleteClient(string Id)
+        public void DeleteClient(ClientViewModel clientViewModel)
         {
-            _clientService.DeleteClient(new Guid(Id));
-            RefreshData();
+            _clientService.DeleteClient(clientViewModel.Client);
+            _clientsView.Remove(clientViewModel);
         }
 
         [RelayCommand]
-        public void DetailsClient(string Id)
+        public void DetailsClient(ClientViewModel clientViewModel)
         {
-            _navigation.NavigateTo<ClientDetailsViewModel>(new Guid(Id));
+            _navigation.NavigateTo<ClientDetailsViewModel>(clientViewModel.Id);
         }
     }
 
     public class ClientViewModel : ViewModelBase
     {
-        private Client _client { get; set; }
-        public string Id => _client.Id.ToString();
-        public string Pesel => _client.Pesel;
-        public string FullName => _client.FirstName + " " + _client.LastName;
-        public string Adress => _client.Address is not null ? _client.Address.Street + " " + _client.Address.BuildingNumber + (_client.Address.FlatNumber is not null ? "/" + _client.Address.FlatNumber : "") : "";
-        public string City => _client.Address is not null ? _client.Address.City : "";
+        public Client Client { get; private set; }
+        public Guid Id => Client.Id;
+        public string Pesel => Client.Pesel;
+        public string FullName => Client.FirstName + " " + Client.LastName;
+        public string Adress => Client.Address is not null ? Client.Address.Street + " " + Client.Address.BuildingNumber + (Client.Address.FlatNumber is not null ? "/" + Client.Address.FlatNumber : "") : "";
+        public string City => Client.Address is not null ? Client.Address.City : "";
 
         public ClientViewModel(Client client)
         {
-            _client = client;
+            Client = client;
         }
     }
 }

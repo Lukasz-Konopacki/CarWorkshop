@@ -7,16 +7,19 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Xaml;
 
 namespace CarWorkshop.Services
 {
     public interface IRepairService
     {
-        public IEnumerable<Repair> GetAllRepairs();
+        void AddRepair(Car car, int kilometerage, bool includeOilService, string? problemDescriptionByClient, DateTime startDate, DateTime endDate, int? workingHour);
+        public void DeleteRepair(Repair repair);
         public Repair? GetRepairById(Guid id);
-        public bool DeleteRepair(Guid id);
-        void AddRepair(string carVin, string? problemDescriptionByClient, decimal? price, int summaryWorkingHours, DateTime startDate, DateTime endDate, string carVIN);
-        void AddPart(Guid guid, string? newPartName, decimal newPartPrice, int newPartQuantity, Guid repairId);
+        public List<Repair> GetAllRepairs();
+        Part AddPart(Repair repair, string newPartName, decimal newPartPrice, int newPartQuantity);
+        void DeletePart(Part part);
     }
 
     public class RepairService : IRepairService
@@ -28,30 +31,39 @@ namespace CarWorkshop.Services
             _context = context;
         }
 
-        public void AddRepair(string carVin, string? problemDescriptionByClient, decimal? price, int summaryWorkingHours, DateTime startDate, DateTime endDate, string carVIN)
+        public void AddRepair(Car car ,int kilometerage, bool includeOilService, string? problemDescriptionByClient, DateTime startDate, DateTime endDate, int? workingHours)
         {
-            _context.Repairs.Add(new Repair(Guid.NewGuid(), problemDescriptionByClient, price, summaryWorkingHours, startDate, endDate, carVIN));
+            _context.Repairs.Add(new Repair(Guid.NewGuid(), car, kilometerage, includeOilService ,problemDescriptionByClient, startDate, endDate, workingHours ?? 0));
             _context.SaveChanges();
         }
 
-        public bool DeleteRepair(Guid id)
+        public void DeleteRepair(Repair repair)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Repair> GetAllRepairs()
-        {
-            return _context.Repairs;
+            _context.Repairs.Remove(repair);
+            _context.SaveChanges();
         }
 
         public Repair? GetRepairById(Guid id)
         {
-          return  _context.Repairs.Where(r => r.Id == id).Include(b => b.parts).SingleOrDefault();
+            return _context.Repairs.Include(b => b.Parts).SingleOrDefault(b => b.Id == id);
         }
 
-        public void AddPart(Guid guid, string? newPartName, decimal newPartPrice, int newPartQuantity, Guid repaidId)
+        public List<Repair> GetAllRepairs()
         {
-            _context.Parts.Add(new Part(guid, newPartName, newPartPrice, newPartQuantity, repaidId));
+            return _context.Repairs.ToList();
+        }
+
+        public Part AddPart(Repair repair ,string newPartName, decimal newPartPrice, int newPartQuantity)
+        {
+            Part newPart = new Part(Guid.NewGuid(), repair, newPartName, newPartPrice, newPartQuantity);
+            _context.Parts.Add(newPart);
+            _context.SaveChanges();
+            return newPart;
+        }
+
+        public void DeletePart(Part part)
+        {
+            _context.Parts.Remove(part);
             _context.SaveChanges();
         }
     }

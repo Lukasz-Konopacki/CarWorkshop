@@ -16,19 +16,23 @@
         <StackPanel Grid.Column="1" Orientation="Vertical"
                     Margin="0 20 0 0">
 
-            <TextBlock Text="PlateNumer" 
+            <TextBlock Text="PlateNumer:" 
                        Margin="0 5 0 5"/>
             <TextBox Text="{Binding PlateNumer}"/>
 
-            <TextBlock Text="VIN" 
+            <TextBlock Text="VIN:" 
                        Margin="0 5 0 5"/>
             <TextBox Text="{Binding VIN}"/>
 
-            <TextBlock Text="Brand" 
+            <TextBlock Text="Brand:" 
                        Margin="0 5 0 5"/>
             <TextBox Text="{Binding Brand}"/>
 
-            <TextBlock Text="Year of Production" 
+            <TextBlock Text="Model:" 
+                       Margin="0 5 0 5"/>
+            <TextBox Text="{Binding Model}"/>
+
+            <TextBlock Text="Year of Production:" 
                        Margin="0 5 0 5"/>
             <TextBox Text="{Binding YearOfProduce}"/>
 

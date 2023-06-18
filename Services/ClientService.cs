@@ -4,16 +4,17 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace CarWorkshop.Services
 {
     public interface IClientService
     {
-        public IEnumerable<Client> GetAllClients();
+        public List<Client> GetAllClients();
         public Client? GetClientById(Guid id);
-        public bool AddClient(string firstName, string lastName, string pesel, string contactNumber, 
+        public Client AddClient(string firstName, string lastName, string pesel, string contactNumber, 
                               string nipNumber, string city, string street, string postalCode, string country, string buildingNumber, string? flatNumber);
-        public bool DeleteClient(Guid id);
+        public void DeleteClient(Client client);
     }
 
     public class ClientService : IClientService
@@ -25,30 +26,29 @@ namespace CarWorkshop.Services
             _dbContexts = dbContexts;
         }
 
-        public bool AddClient(string firstName, string lastName, string pesel, string contactNumber, string nipNumber, 
-                              string city, string street, string postalCode, string country, string buildingNumber, string? flatNumber)
+        public Client AddClient(string firstName, string lastName, string pesel, string contactNumber, string nipNumber, string city, string street, string postalCode, string country, string buildingNumber, string? flatNumber)
         {
-            _dbContexts.Clients.Add(new Client(Guid.NewGuid(),firstName, lastName, pesel, contactNumber, nipNumber, new Address(Guid.NewGuid(),city, street, postalCode, country, buildingNumber, flatNumber)));
+            Client newClient = new Client(Guid.NewGuid(), firstName, lastName, pesel, contactNumber, nipNumber, new Address(Guid.NewGuid(), city, street, postalCode, country, buildingNumber, flatNumber));
+            _dbContexts.Clients.Add(newClient);
             _dbContexts.SaveChanges();
 
-            return true;
+            return newClient;
         }
 
-        public bool DeleteClient(Guid id)
+        public void DeleteClient(Client client)
         {
-           _dbContexts.Clients.Remove(_dbContexts.Clients.Find(id));
+           _dbContexts.Clients.Remove(client);
             _dbContexts.SaveChanges();
-            return true;
         }
 
-        public IEnumerable<Client> GetAllClients()
+        public List<Client> GetAllClients()
         {
-            return _dbContexts.Clients.Take(20).Include(client => client.Address);
+            return _dbContexts.Clients.Include(client => client.Address).ToList();
         }
 
         public Client? GetClientById(Guid id)
         {
-            return _dbContexts.Clients.SingleOrDefault(x => x.Id == id);
+            return _dbContexts.Clients.Include(client => client.Address).Include(client => client.Cars).SingleOrDefault(x => x.Id == id);
         }
     }
 }

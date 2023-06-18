@@ -1,4 +1,5 @@
-﻿using CarWorkshop.Services;
+﻿using CarWorkshop.Model;
+using CarWorkshop.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -15,19 +16,21 @@ namespace CarWorkshop.ViewModel
         [ObservableProperty]
         private string _vIN;
         [ObservableProperty]
-        public string _plateNumer;
+        private string _plateNumer;
         [ObservableProperty]
-        public string _brand;
+        private string _brand;
         [ObservableProperty]
-        public int? _yearOfProduce;
+        private string _model;
+        [ObservableProperty]
+        private int _yearOfProduce;
 
-        private Guid _clientId;
+        private Client _client;
         private readonly ICarService _carService;
         private readonly INavigationService _navigationService;
 
-        public AddCarViewModel(Guid clientId,ICarService carService, INavigationService navigationService)
+        public AddCarViewModel(Client client,ICarService carService, INavigationService navigationService)
         {
-            _clientId = clientId;
+            _client = client;
             _carService = carService;
             _navigationService = navigationService;
         }
@@ -35,8 +38,8 @@ namespace CarWorkshop.ViewModel
         [RelayCommand]
         public void AddCar()
         {
-            _carService.AddCar(_plateNumer, _vIN, _brand, _yearOfProduce, _clientId);
-            _navigationService.NavigateTo<ClientDetailsViewModel>(_clientId);
+            _carService.AddCar(_client, _plateNumer, _vIN, _brand, _model, _yearOfProduce);
+            _navigationService.NavigateTo<ClientDetailsViewModel>(_client.Id);
         }
     }
 }

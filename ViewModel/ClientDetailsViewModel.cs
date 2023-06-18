@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +13,10 @@ namespace CarWorkshop.ViewModel
 {
     public partial class ClientDetailsViewModel :ViewModelBase
     {
-        private readonly IClientService _clientService;
         private readonly INavigationService _navigationService;
-        private Guid _clientId;
-
+        private readonly ICarService _carService;
         [ObservableProperty]
         private Client _client;
-
         public string Pesel => _client.Pesel;
         public string FullName => _client.FirstName + " " + _client.LastName;
         public string Adress => _client.Address is not null ? _client.Address.Street + " " + _client.Address.BuildingNumber + (_client.Address.FlatNumber is not null ? "/" + _client.Address.FlatNumber : "") : "";
@@ -26,26 +24,37 @@ namespace CarWorkshop.ViewModel
         public string City => _client.Address is not null ? _client.Address.City : "";
         public string ContactNumber => _client.ContactNumber ?? "";
         public string NipNumber => _client.NipNumber ?? "";
-        public List<Car> Cars => _client.Cars;
+
+        [ObservableProperty]
+        public ObservableCollection<Car> _cars;
 
 
-        public ClientDetailsViewModel(Guid clientId, IClientService clientService, INavigationService navigationService)
+        public ClientDetailsViewModel(Guid clientId, IClientService clientService, ICarService carService ,INavigationService navigationService)
         {
-            _clientService = clientService;
+            _carService = carService;
             _navigationService = navigationService;
-            _clientId = clientId;
-            RefreshData();
 
-        }
-        public void RefreshData()
-        {
-            _client = _clientService.GetClientById(_clientId);
+            _client = clientService.GetClientById(clientId);
+            _cars = new ObservableCollection<Car>(_client.Cars);
         }
 
         [RelayCommand]
         public void AddNewCar()
         {
-            _navigationService.NavigateTo<AddCarViewModel>(_clientId);
+            _navigationService.NavigateTo<AddCarViewModel>(_client);
+        }
+
+        [RelayCommand]
+        public void DeleteCar(Car car)
+        {
+            _carService.DeleteCar(car);
+            _cars.Remove(car);
+        }
+
+        [RelayCommand]
+        public void CarDetails(Car car) 
+        {
+            _navigationService.NavigateTo<CarDetailsViewModel>(car.Id);
         }
     }
 }

@@ -1,0 +1,47 @@
+﻿<Window x:Class="CarWorkshop.Views.ConfrimWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarWorkshop.Views"
+        mc:Ignorable="d"
+        Title="ConfrimWindow" Height="300" Width="500"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Warning!" 
+                   Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                   TextAlignment="Center"
+                   FontSize="30"
+                   Margin="20 10 0 0"/>
+
+        <TextBlock Text="In selected date are already register 10 others repairs. Are you sure you would like to add another one?" 
+                   Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   Margin="0 30 0 0"/>
+
+        <Button Content="Yes" 
+            Command="{Binding Path=ConfirmCommand}"
+             Grid.Row="2" Grid.Column="1"
+                Width="100" Height=" 30"/>
+
+        <Button Content="No" 
+            Command="{Binding Path=RejectCommand}"
+             Grid.Row="2" Grid.Column="2"
+                Width="100" Height=" 30"/>
+    </Grid>
+</Window>

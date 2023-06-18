@@ -12,14 +12,12 @@ namespace CarWorkshop.Model
         public string? NipNumber { get; set; }
         public List<Car> Cars { get; set; }
 
-        public Client(Guid id, string firstName, string lastName, string pesel, string contactNumber, string nipNumber) : base(id, firstName, lastName, pesel)
-        {
-            ContactNumber = contactNumber;
-            NipNumber = nipNumber;
-            Cars = new List<Car>();
-        }
+        /// <summary>
+        /// Constructor for EF
+        /// </summary>
+        private Client() { }
 
-        public Client(Guid id, string firstName, string lastName, string pesel, string contactNumber, string nipNumber, Address address) : base(id, firstName, lastName, pesel, address)
+        public Client(Guid id, string firstName, string lastName, string pesel, string contactNumber, string nipNumber, Address? address = null) : base(id, firstName, lastName, pesel, address)
         {
             ContactNumber = contactNumber;
             NipNumber = nipNumber;
